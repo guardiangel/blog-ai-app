@@ -1,4 +1,5 @@
 import Tech from "./(home)/Tech";
+import Travel from "./(home)/Travel";
 import Treding from "./(home)/Treding";
 
 export default function Home() {
@@ -8,7 +9,7 @@ export default function Home() {
       <div className="md:flex gap-10 mb-5">
         <div className="basis-3/4">
           <Tech />
-          {/* <Travel /> */}
+          <Travel />
           {/* <Other /> */}
           <div className="hidden md:block">{/* <Subscrite /> */}</div>
         </div>
