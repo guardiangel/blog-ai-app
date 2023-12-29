@@ -18,7 +18,7 @@ model Post {
   title     String
   category  String
   content   String   @db.Text
-  auth      String
+  author    String
   image     String
   snippet   String   @db.Text
 }
