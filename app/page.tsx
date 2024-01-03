@@ -12,7 +12,17 @@ export const revalidate = 2; //render every 60 seconds.
 const getPosts = async () => {
   //const posts: Array<Post> = await prisma.post.findMany();
   const posts: Post[] = await prisma.post.findMany();
-  return posts;
+
+  const formatPosts = await Promise.all(
+    posts.map(async (post: Post) => {
+      const imageModule = require(`../public${post.image}`);
+      return {
+        ...post,
+        image: imageModule.default,
+      };
+    })
+  );
+  return formatPosts;
 };
 
 export default async function Home() {
