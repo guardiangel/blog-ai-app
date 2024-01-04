@@ -29,26 +29,26 @@ const Tech = ({ techPosts }: Props) => {
       <div className="sm:grid grid-cols-2 grid-rows-3 gap-x-8 gap-y-8 my-5">
         {/**large card */}
         <Card
-          className="bg-wh-500 col-span-1 row-span-3"
+          className="col-span-1 row-span-3"
           imageHeight="h-96"
           isLongForm
           post={techPosts[0]}
         />
         {/**small card */}
         <Card
-          className="bg-wh-500 col-span-1 row-span-1 mt-10 sm:mt-0 flex justify-between gap-3"
+          className=" col-span-1 row-span-1 mt-10 sm:mt-0 flex justify-between gap-3"
           imageHeight="h-48"
           isSmallCard
           post={techPosts[1]}
         />
         <Card
-          className="bg-wh-500 col-span-1 row-span-1 mt-10 sm:mt-0 flex justify-between gap-3"
+          className="col-span-1 row-span-1 mt-10 sm:mt-0 flex justify-between gap-3"
           imageHeight="h-48"
           isSmallCard
           post={techPosts[2]}
         />
         <Card
-          className="bg-wh-500 col-span-1 row-span-1 mt-10 sm:mt-0 flex justify-between gap-3"
+          className="col-span-1 row-span-1 mt-10 sm:mt-0 flex justify-between gap-3"
           imageHeight="h-48"
           isSmallCard
           post={techPosts[3]}
