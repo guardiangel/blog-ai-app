@@ -5,13 +5,13 @@ import Treding from "./(home)/Treding";
 import Other from "./(shared)/Other";
 import Sidebar from "./(shared)/Sidebar";
 import Subscribe from "./(shared)/Subscribe";
-import { prisma } from "./api/client";
+import { customPrisma } from "./api/client";
 
 export const revalidate = 2; //render every 60 seconds.
 
 const getPosts = async () => {
   //const posts: Array<Post> = await prisma.post.findMany();
-  const posts: Post[] = await prisma.post.findMany();
+  const posts: Post[] = await customPrisma.post.findMany();
 
   const formatPosts = await Promise.all(
     posts.map(async (post: Post) => {
