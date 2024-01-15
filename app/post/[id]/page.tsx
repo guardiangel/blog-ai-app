@@ -3,10 +3,13 @@ import React from "react";
 import { customPrisma } from "../../api/client";
 import { Post as PostType } from "@prisma/client";
 import { FormattedPost } from "@/app/type";
+import Content from "./Content";
 
 type Props = {
   params: { id: string };
 };
+
+export const revalidate = 60;
 
 const getPost = async (id: string) => {
   const post: PostType | null = await customPrisma.post.findUnique({
@@ -30,11 +33,15 @@ const getPost = async (id: string) => {
 const Post = async ({ params }: Props) => {
   const { id } = params;
   const post: FormattedPost | null = await getPost(id);
-  console.log("post===", post);
+  if (!post) {
+    return <div>Post Not Found</div>;
+  }
   return (
     <main className="px-10 leading-7">
       <div className="md:flex gap-10 mb-5">
-        <div className="basis-3/4">{/* <Content /> */}</div>
+        <div className="basis-3/4">
+          <Content post={post} />
+        </div>
         <div className="basis-1/4">
           <Sidebar />
         </div>
