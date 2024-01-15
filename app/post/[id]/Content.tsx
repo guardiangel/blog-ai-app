@@ -4,6 +4,9 @@ import React, { useState } from "react";
 import { XMarkIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import SocialLinks from "@/app/(shared)/SocialLinks";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import EditorMenuBar from "./EditorMenuBar";
 
 type Props = {
   post: FormattedPost;
@@ -15,6 +18,11 @@ const Content = ({ post }: Props) => {
   const [titleError, setTitleError] = useState<string>("");
   const [content, setContent] = useState<string>(post?.content);
   const [contentError, setContentError] = useState<string>();
+
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: "<p>Hello World! 🌎️</p>",
+  });
 
   const handleSubmit = () => {};
 
@@ -77,6 +85,22 @@ const Content = ({ post }: Props) => {
           60vw"
             style={{ objectFit: "cover" }}
           />
+        </div>
+
+        <div
+          className={
+            isEditable
+              ? "border-2 rounded-md bg-wh-50 p-3"
+              : "w-full max-w-full"
+          }
+        >
+          {isEditable && (
+            <>
+              <EditorMenuBar editor={editor} />
+              <hr className="border-1 mt-2 mb-5" />
+            </>
+          )}
+          <EditorContent editor={editor} />
         </div>
 
         {/**submit button */}
