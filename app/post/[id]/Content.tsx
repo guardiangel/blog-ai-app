@@ -1,12 +1,13 @@
 "use client";
 import { FormattedPost } from "@/app/type";
 import React, { useState } from "react";
-import { XMarkIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
+
 import Image from "next/image";
 import SocialLinks from "@/app/(shared)/SocialLinks";
-import { EditorContent, useEditor } from "@tiptap/react";
+import { Editor, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import EditorMenuBar from "./EditorMenuBar";
+import CategoryAndEditor from "./CategoryAndEditor";
 
 type Props = {
   post: FormattedPost;
@@ -19,9 +20,31 @@ const Content = ({ post }: Props) => {
   const [content, setContent] = useState<string>(post?.content);
   const [contentError, setContentError] = useState<string>();
 
+  const [tempTitle, setTempTitle] = useState<string>("");
+  const [tempContent, setTempContent] = useState<string>(content);
+
+  const handleEnableEdit = (bool: boolean) => {
+    setIsEditable(bool);
+    editor?.setEditable(bool);
+  };
+
+  function handleOnChangeContent({ editor }: any): void {
+    if (!(editor as Editor).isEmpty) {
+      setContentError("");
+    }
+    setContent((editor as Editor).getHTML());
+  }
+
+  const handleOnChangeTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (title) setTitleError("");
+    setTitle(e.target.value);
+  };
+
   const editor = useEditor({
     extensions: [StarterKit],
-    content: "<p>Hello World! 🌎️</p>",
+    onUpdate: handleOnChangeContent,
+    content: content,
+    editable: isEditable,
   });
 
   const handleSubmit = () => {};
@@ -32,26 +55,18 @@ const Content = ({ post }: Props) => {
       {/**breadscrumb */}
       <h5 className="text-wh-300">{`Home>${post.category}>${post.title}`}</h5>
       {/**category and edit */}
-      <div className="flex justify-items-center">
-        <h4 className="bg-accent-orange py-2 px-5 text-wh-900 text-sm font-bold">
-          {post.category}
-        </h4>
-        <div className="mt-4">
-          {isEditable ? (
-            <div className="flex justify-bewteen gap-3">
-              <button onClick={() => console.log("cancel edit")}>
-                <XMarkIcon className="h-6 w-6 text-accent-red" />
-              </button>
-            </div>
-          ) : (
-            <div className="flex justify-bewteen gap-3">
-              <button onClick={() => console.log("continue to edit")}>
-                <PencilSquareIcon className="h-6 w-6 text-accent-red" />
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
+      <CategoryAndEditor
+        isEditable={isEditable}
+        handleIsEditable={handleEnableEdit}
+        title={title}
+        setTitle={setTitle}
+        tempTitle={tempTitle}
+        setTempTitle={setTempTitle}
+        tempContent={tempContent}
+        setTempContent={setTempContent}
+        editor={editor}
+        post={post}
+      />
       <form onSubmit={handleSubmit}>
         {/**header */}
         <>
@@ -60,7 +75,7 @@ const Content = ({ post }: Props) => {
               <textarea
                 className="border-2 rounded-md bg-wh-50 p-3 w-full"
                 placeholder="Title"
-                onChange={(e) => console.log("change title", e.target.value)}
+                onChange={handleOnChangeTitle}
                 value={title}
               ></textarea>
             </div>
